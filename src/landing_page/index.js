@@ -1,13 +1,16 @@
 import React, {useState} from "react";
 import "./landing_page.css";
-import EmojiPicker from 'emoji-picker-react';
+import Editor from "../Components/Editor";
 
 export default function LandingPage() {
 
-  let cardGrid = [1,2,3,4,5,6,7,8,9,10]
+    var path = process.env.PUBLIC_URL;
+  let cardGrid = ['/imagi-son.jpg','/fa-bike.png','/car.jpg','/dis.jpeg','/dog.jpg','fam.jpg','glasses.jpg','lion.jpg','story.jpg','toy.jpg']
 
   const [text, setText] = useState('');
+  const [activeImg, setActiveImg] = useState(0);
   const [emojiVisible, setEmojiVisible] = useState(false);
+
 
   return (
     <div className="page-wrapper">
@@ -37,12 +40,11 @@ export default function LandingPage() {
                         <div className="page"></div>
                         </div>
                         <div className="img-page">
-                            <img src="./imagi-son.jpg" style={{width:"900px",height:'550px'}}/>
+                            <img src={path+cardGrid[activeImg]} style={{width:"900px",height:'550px'}}/>
                         </div>
                     </div>
-                    <div className="inpt-wrapper"> 
-                    <input type="text" value={text} onChange={e=>setText(e.target.value)} onFocus={()=>setEmojiVisible(true)} placeholder="Start Typing Here" className="inpt"/>
-                    {emojiVisible ? <EmojiPicker onEmojiClick={(e)=>{setText(...text+ e.emoji);}}/> : <></>}
+                    <div className="inpt-wrapper">    
+                    {emojiVisible ? <Editor setEmojiVisible={setEmojiVisible} /> : <input type="text" value={text} onChange={e=>setText(e.target.value)} onFocus={()=>setEmojiVisible(true)} placeholder="Start Typing Here" className="inpt"/>}
                     </div>
                 </div>
                 <div className="d-flex justify-content-end">
@@ -63,8 +65,9 @@ export default function LandingPage() {
                     <i class="fas fa-caret-down"></i>
                 </div>
                 <div className="d-flex justify-content-between flex-wrap" >
-                    {cardGrid.map(()=>{
-                        return  <img src="./imagi-son.jpg" className="grid-img"/>
+                    {cardGrid.map((item, index)=>{
+                        console.log( activeImg.target,index, activeImg == index);
+                        return  <img src={path + item}  value={index} className={activeImg == index ? 'active-img' : "grid-img" } key={index} onClick={()=>setActiveImg(index)}/>
                     })}
                 </div>
                 </div>
